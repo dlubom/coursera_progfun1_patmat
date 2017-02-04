@@ -33,6 +33,10 @@ class HuffmanSuite extends FunSuite {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
   }
 
+  //added by dlubom
+  test("times(\"aba\")") {
+    assert(times(string2Chars("aba")) === List(('a', 2), ('b', 1)))
+  }
 
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
@@ -44,6 +48,12 @@ class HuffmanSuite extends FunSuite {
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
 
+  //added by dlubom
+  test("createCodeTree") {
+    new TestTrees {
+      assert(createCodeTree("aabbb".toList) === t1)
+    }
+  }
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {

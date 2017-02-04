@@ -108,9 +108,10 @@ object Huffman {
     * If `trees` is a list of less than two elements, that list should be returned
     * unchanged.
     */
-  def combine(trees: List[CodeTree]): List[CodeTree] = if (trees.length < 2) trees else (makeCodeTree(trees(0), trees(1)) :: trees.drop(2))
-
-  //TODO inert nie zawsze będzie na początku listy ?
+  def combine(trees: List[CodeTree]): List[CodeTree] = trees match {
+    case first :: second :: tail => makeCodeTree(first, second) :: tail sortWith (weight(_) < weight(_))
+    case _ => trees
+  }
 
   /**
     * This function will be called in the following way:
@@ -129,7 +130,8 @@ object Huffman {
     * the example invocation. Also define the return type of the `until` function.
     *  - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
     */
-  def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+  def until(singleton: List[CodeTree] => Boolean, combine: List[CodeTree] => List[CodeTree])(trees: List[CodeTree]): List[CodeTree] =
+    if (singleton(trees)) trees else until(singleton, combine)(combine(trees))
 
   /**
     * This function creates a code tree which is optimal to encode the text `chars`.
@@ -137,8 +139,7 @@ object Huffman {
     * The parameter `chars` is an arbitrary text. This function extracts the character
     * frequencies from that text and creates a code tree based on them.
     */
-  def createCodeTree(chars: List[Char]): CodeTree = ???
-
+  def createCodeTree(chars: List[Char]): CodeTree = until(singleton, combine)(makeOrderedLeafList(times(chars))) head
 
   // Part 3: Decoding
 
